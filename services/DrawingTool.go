@@ -26,6 +26,9 @@ func (dt *DrawingTool) executeCommand(command string) {
 		width := atoi(parts[1])
 		height := atoi(parts[2])
 		dt.createCanvas(width, height)
+	case "L":
+		x1, y1, x2, y2 := atoi(parts[1]), atoi(parts[2]), atoi(parts[3]), atoi(parts[4])
+		dt.drawLine(x1, y1, x2, y2)
 	}
 }
 
@@ -41,6 +44,18 @@ func (dt *DrawingTool) createCanvas(width, height int) {
 			} else {
 				dt.canvas[i][j] = ' '
 			}
+		}
+	}
+}
+
+func (dt *DrawingTool) drawLine(x1, y1, x2, y2 int) {
+	if x1 == x2 {
+		for y := min(y1, y2); y <= max(y1, y2); y++ {
+			dt.canvas[y][x1] = 'x'
+		}
+	} else if y1 == y2 {
+		for x := min(x1, x2); x <= max(x1, x2); x++ {
+			dt.canvas[y1][x] = 'x'
 		}
 	}
 }
