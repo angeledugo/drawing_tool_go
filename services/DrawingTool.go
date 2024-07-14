@@ -32,6 +32,11 @@ func (dt *DrawingTool) executeCommand(command string) {
 	case "R":
 		x1, y1, x2, y2 := atoi(parts[1]), atoi(parts[2]), atoi(parts[3]), atoi(parts[4])
 		dt.drawRectangle(x1, y1, x2, y2)
+	case "B":
+		x, y := atoi(parts[1]), atoi(parts[2])
+		color := rune(parts[3][0])
+		dt.bucketFill(x, y, color)
+
 	}
 }
 
@@ -79,8 +84,41 @@ func (dt *DrawingTool) renderCanvas() string {
 	return strings.TrimSpace(sb.String())
 }
 
+func (dt *DrawingTool) bucketFill(x, y int, color rune) {
+	targetColor := dt.canvas[y][x]
+	dt.fill(x, y, targetColor, color)
+}
+
+func (dt *DrawingTool) fill(x, y int, targetColor, replacementColor rune) {
+	if x < 0 || x >= len(dt.canvas[0]) || y < 0 || y >= len(dt.canvas) {
+		return
+	}
+	if dt.canvas[y][x] != targetColor {
+		return
+	}
+	dt.canvas[y][x] = replacementColor
+	dt.fill(x+1, y, targetColor, replacementColor)
+	dt.fill(x-1, y, targetColor, replacementColor)
+	dt.fill(x, y+1, targetColor, replacementColor)
+	dt.fill(x, y-1, targetColor, replacementColor)
+}
+
 func atoi(s string) int {
 	var result int
 	fmt.Sscanf(s, "%d", &result)
 	return result
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
