@@ -29,6 +29,9 @@ func (dt *DrawingTool) executeCommand(command string) {
 	case "L":
 		x1, y1, x2, y2 := atoi(parts[1]), atoi(parts[2]), atoi(parts[3]), atoi(parts[4])
 		dt.drawLine(x1, y1, x2, y2)
+	case "R":
+		x1, y1, x2, y2 := atoi(parts[1]), atoi(parts[2]), atoi(parts[3]), atoi(parts[4])
+		dt.drawRectangle(x1, y1, x2, y2)
 	}
 }
 
@@ -58,6 +61,13 @@ func (dt *DrawingTool) drawLine(x1, y1, x2, y2 int) {
 			dt.canvas[y1][x] = 'x'
 		}
 	}
+}
+
+func (dt *DrawingTool) drawRectangle(x1, y1, x2, y2 int) {
+	dt.drawLine(x1, y1, x2, y1)
+	dt.drawLine(x1, y2, x2, y2)
+	dt.drawLine(x1, y1, x1, y2)
+	dt.drawLine(x2, y1, x2, y2)
 }
 
 func (dt *DrawingTool) renderCanvas() string {
