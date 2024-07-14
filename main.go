@@ -17,5 +17,11 @@ func main() {
 	dt := &services.DrawingTool{}
 	output := dt.ExecuteCommands(string(input))
 
-	fmt.Printf(output)
+	err = ioutil.WriteFile("output.txt", []byte(output), 0644)
+	if err != nil {
+		fmt.Println("Error al escribir el archivo de salida:", err)
+		return
+	}
+
+	fmt.Println("Dibujo completado. Revisa output.txt para ver el resultado.")
 }
